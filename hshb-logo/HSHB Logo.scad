@@ -1,35 +1,4 @@
-gap = 0.0;
-xsize = 3.5;
-ysize = xsize;
-zsize = 3.5;
-magnetHeight = 2.0;
-magnetDiam = 4.0;
-
-module 3dPixel(xpos, ypos)
-{
-    translate(v=[xpos*(gap+xsize),ypos*(gap+ysize),0])
-    cube(size=[xsize, ysize, zsize]);
-}
-module RingHole(xpos, ypos)
-{
-    difference(){
-        3dPixel(xpos, ypos);
-        translate(v=[xpos*(gap+xsize)+0.5*xsize,ypos*(gap+ysize)+0.5*ysize,0.5*zsize])
-        cylinder(h=1.1*zsize, r=0.4*xsize, $fn=20, center=true);
-    }
-}
-module PixelSteg(x1, y1, x2, y2, rot=45)
-{
-    translate(v=[(x1+x2)/2*(gap+xsize)+0.5*xsize,(y1+y2)/2*(gap+ysize)+0.5*ysize,zsize/5/2])
-    rotate([0,0,rot])
-    cube(size=[abs(x1-x2)*xsize, ysize, zsize/5],center=true);
-}
-
-module MagnetHole(xpos, ypos)
-{
-    translate(v=[xpos*(gap+xsize)+0.5*xsize,ypos*(gap+ysize)+0.5*ysize,magnetHeight/2])
-    cylinder(h=magnetHeight, r=magnetDiam/2, $fn=20, center=true);
-}
+use <3dPixel.scad>;
 
 module hshbLogo()
 {
@@ -124,15 +93,15 @@ module hshbLogo()
     PixelSteg(6,13,5,14);
 }
 
+
 //Logo mit Loch f?r Magnet
 difference()
 {
     hshbLogo();
-    //MagnetHole(8,6);
-    $fn=50;
-    translate([8.5*xsize,16*ysize,-0.05])
-    cylinder(r=xsize/2,h=zsize*1.1);
+    MagnetHole(8,6);
 }
+
+
 
 
 
